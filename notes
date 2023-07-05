@@ -1,0 +1,103 @@
+- bisa execute actions di dalam useSelector()
+
+- ambil result dari API, isLoading & error state
+  const { data: service, isLoading, error } = useGetServiceQuery(serviceId);
+  error -> error.status, error.data.message
+
+- PATTERN error & loading handling (FETCH PROSES)
+  {isLoading ? (
+      <LoaderComponent />
+    ) : error ? (
+      <ErrorComponent />
+    ) : (
+      <MainComponent />
+    )
+  }
+ 
+- POST with RTK query
+  const [makeContact, { isLoading, isSuccess, error }] = useMakeContactMutation(); // * RTK query
+  makeContact(Object.fromEntries(formData));
+
+  error -> error.status, error.data.message
+
+- MODIFIED RESPONSE (mirip middleware)
+   pakai property modifiedTransform
+   getDogs: builder.query({
+    query: () => "/dogs",
+    transformResponse: (dogs) => {
+      return dogs
+    },
+  }),
+
+- PAKAI HASIL RTKQ DI DALAM REDUCER - SLICE (memoize selector)
+  - PAKAI createSelector
+    getServicesForLuckyDog = createSelector(
+    api.endpoints.getServices.select(), // * executed query
+    api.endpoints.getDogs.select(), // * executed query
+    (state) => state.dogs.luckyDog,
+      ({ data: services }, { data: myDogs }, luckyDog) => {
+        // proses disini
+        return ...
+      }
+    );
+  -executed ==> const myServices = useSelector((state) => getServicesForLuckyDog(state));
+
+- HANDLE SUCCESFUL & FAILED MUTATION (cara ke 1)
+  - biasanya setelah proses POST, kita perlu nge fetch lagi untuk dapatin data yang terbaru
+  - di RTKQ bisa otomatis dengan memakai unwrap & refetch()
+  - setelah proses refetch berhasil, useGetDogsQuery akan otomatis terupdate jg
+  - lihat di DogsPage.jsx
+  
+  const { data: myDogs = {}, isLoading, refetch } = useGetDogsQuery();
+  const [addDog] = useAddDogMutation();
+  addDog(data)
+  .unwrap()
+  .then(() => {
+    refetch();
+  })
+  .catch((response) => {
+    const message = `adding dog failed ${JSON.stringify(response)}`;
+    alert
+
+- HANDLE SUCCESFUL MUTATION (cara ke 2)
+  - bisa pakai tagTypes
+  - contoh ==> tagTypes : ["Services", "Dogs"],
+  - nanti di query / mutation tinggal ditambahin providesTags, invalidatesTags
+
+- OTOMATIS REFETCH KETIKA FOCUS / UNFOCUS , ATAU PUTUS KONEKSI INTERNET
+  - pasang listener dlu di store
+    setupListeners(store.dispatch);
+
+  - tambah propery di createAPi nya
+    refetchOnFocus: true,
+    refetchOnReconnect: true,
+
+- OTOMATIS HAPUS CAHCE KETIKA REMOVE DATA (Optimistic updates)
+  - karena data yg ditampilkan itu berasal dari cache
+  - jadi ketika update / delete data, kita bisa langsung edit cache nya *sembari nunggu proses dari server
+  - pakai onQueryStarted *cek di apiSlice.js -> removeDog
+    onQueryStarted(id, { dispatch, queryFulfilled }) {
+    // * Optimistic updates
+    const update = dispatch(
+      api.util.updateQueryData("getDogs", undefined, (dogs) => {
+        delete dogs[id];
+      })
+    );
+
+    // * Failed Optimistic updates, undo the change
+    queryFulfilled.catch(() => update.undo);
+  },
+
+- RTKQ bisa automatic fetch tanpa nunggu component rerender
+  - jadi data cache nya otomatis ke isi lebih dlu (bikin apps lebih cepat)
+  - tinggal execute di main.js
+    store.dispatch(api.endpoints.getDogs.initiate());
+    store.dispatch(api.endpoints.getServices.initiate());
+    store.dispatch(api.endpoints.getService.initiate("a098239"));
+
+- RTKQ bisa pre fetch (otomatis ngefetch ketika di trigger), sebelum component di rerender
+  - bisa di implementasikan di navigation -> onMouseEnter
+    const prefetchServices = api.usePrefetch("getServices");
+    <li onMouseEnter={() => prefetchServices()}> 
+
+    

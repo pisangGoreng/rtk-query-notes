@@ -1,0 +1,350 @@
+body,
+html {
+  padding: 0;
+  margin: 0;
+}
+#root {
+  width: 100%;
+  text-align: center;
+}
+
+.page {
+  max-width: 640px;
+  margin: 1em auto;
+  margin-top: 120px;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.read-the-docs {
+  color: #888;
+}
+
+.topNav {
+  background-color: #ffaf08;
+  height: 5em;
+  border-bottom: 2px solid mediumpurple;
+  position: fixed;
+  width: 100%;
+}
+
+.topNav ul {
+  margin: 0;
+  list-style: none;
+  display: flex;
+  justify-content: space-around;
+  height: 100%;
+  padding: 0;
+}
+
+.topNav li {
+  flex: 1;
+  border-right: 1px solid mediumpurple;
+}
+
+.topNav li:last-of-type {
+  flex: 1;
+  border-right: none;
+}
+
+.topNav a {
+  font-size: 1.8em;
+  line-height: 2.5em;
+  text-shadow: 1px 2px 3px #b269b2;
+  transition: all 0.25s;
+  width: 100%;
+  display: inline-block;
+}
+
+.topNav a:hover {
+  font-size: 2em;
+}
+
+.topNav li.selected {
+  background: mediumpurple;
+}
+
+.topNav li.selected a:hover {
+  font-size: 1.8em;
+}
+
+.topNav li.selected a {
+  color: orange;
+  text-shadow: none;
+  text-decoration: none;
+}
+.loader {
+  width: 320px;
+  height: 150px;
+  margin: auto;
+  display: block;
+  position: relative;
+  background: #fff;
+  box-sizing: border-box;
+}
+.loader::after {
+  content: "";
+  width: calc(100% - 30px);
+  height: calc(100% - 30px);
+  top: 15px;
+  left: 15px;
+  position: absolute;
+  background-image: linear-gradient(
+      100deg,
+      transparent,
+      rgba(255, 255, 255, 0.5) 50%,
+      transparent 80%
+    ),
+    linear-gradient(#ddd 56px, transparent 0),
+    linear-gradient(#ddd 24px, transparent 0),
+    linear-gradient(#ddd 18px, transparent 0),
+    linear-gradient(#ddd 66px, transparent 0);
+  background-repeat: no-repeat;
+  background-size: 75px 130px, 55px 56px, 160px 30px, 260px 20px, 290px 56px;
+  background-position: 0% 0, 0 0, 70px 5px, 70px 38px, 0px 66px;
+  box-sizing: border-box;
+  animation: animloader 1s linear infinite;
+}
+
+@keyframes animloader {
+  0% {
+    background-position: 0% 0, 0 0, 70px 5px, 70px 38px, 0px 66px;
+  }
+  100% {
+    background-position: 150% 0, 0 0, 70px 5px, 70px 38px, 0px 66px;
+  }
+}
+
+label {
+  display: block;
+  width: 100px;
+  background: black;
+  color: orange;
+  font-weight: bold;
+  padding: 0.25em 0.5em;
+}
+
+select,
+textarea,
+input {
+  margin-bottom: 1em;
+  vertical-align: top;
+  font-size: 18px;
+}
+
+textarea,
+input[type="email"],
+input[type="text"] {
+  width: 480px;
+}
+
+body button {
+  background-color: black;
+  color: orange;
+  outline-color: orange;
+  box-shadow: 3px 3px 2px orange;
+  border-radius: 0;
+}
+
+body button:hover {
+  box-shadow: 1px 1px 1px orange;
+  border-color: transparent;
+}
+
+body button:focus {
+  outline: 4px auto white;
+  box-shadow: none;
+}
+
+body button:hover:disabled,
+body button:disabled {
+  background: gray;
+  box-shadow: 3px 3px 2px orange;
+  cursor: default;
+}
+
+form {
+  text-align: left;
+  width: fit-content;
+  margin: 0 auto;
+}
+
+.card {
+  align-items: flex-start;
+  padding: 1em;
+  display: flex;
+  border-radius: 1em;
+  justify-content: space-between;
+  border: 3px solid orange;
+  flex-direction: row;
+  margin-bottom: 1em;
+  gap: 1em;
+}
+
+.card :where(h3, h4) {
+  margin: 0;
+}
+
+.card h4 {
+  font-weight: normal;
+}
+
+.card img {
+  width: 200px;
+  border-radius: 0.6em;
+}
+
+.card > div {
+  align-items: end;
+}
+
+.dogDialog {
+  border: none;
+  border: 2px solid orange;
+  padding: 1.5em;
+  border-radius: 0.5em;
+}
+
+.dogDialog::backdrop {
+  background-color: rgba(0, 0, 0, 0.3);
+  opacity: 0.2;
+  background-image: repeating-linear-gradient(
+    45deg,
+    orange,
+    orange 10px,
+    white 10px,
+    white 20px
+  );
+}
+
+.dogsForm label {
+  width: 150px;
+}
+.dogsForm select {
+  display: block;
+}
+
+.dogsForm .grid {
+  display: grid;
+  grid-template-columns: auto auto;
+  flex-direction: column;
+}
+
+fieldset {
+  border: none;
+}
+.dogsForm input {
+  width: auto;
+  min-width: 250px;
+}
+
+.dogsForm .center {
+  display: flex;
+  text-align: center;
+  margin: 0 auto;
+  justify-content: space-evenly;
+}
+
+button.secondary {
+  background-color: #fafafa;
+  color: black;
+}
+
+button.secondary:focus {
+  box-shadow: -1px -1px 4px black;
+  border-radius: 0;
+}
+
+dl {
+  display: grid;
+  grid-template-columns: max-content auto;
+}
+
+dt {
+  text-align: right;
+  grid-column-start: 1;
+  font-weight: bold;
+}
+
+dd {
+  margin-left: 1em;
+  text-align: left;
+  grid-column-start: 2;
+}
+
+.dogName {
+  display: inline-block;
+}
+
+.dogCardHeader {
+  display: flex;
+  justify-content: space-between;
+}
+
+.luckyDogComponent {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 2em;
+}
+
+.card.luckyDog {
+  background-color: rgb(255 176 59 / 15%);
+}
+.card.luckyDog .dogName:after {
+  content: "🌟";
+}
+
+.alert {
+  width: 66%;
+  opacity: 0%;
+  background: orange;
+  color: white;
+  margin: 0 auto;
+  margin-top: -2.3em;
+  position: relative;
+  top: 0.6em;
+  font-size: 1.2em;
+  transition: opacity 1s ease-in;
+}
+
+.alert.show {
+  opacity: 100%;
+}
+
+.dogImg {
+  font-size: 8rem;
+  line-height: 1em;
+  margin-right: 13px;
+}
+
+.restrictions h3 {
+  width: fit-content;
+  text-decoration: underline;
+}
